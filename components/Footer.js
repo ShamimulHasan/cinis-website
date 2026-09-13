@@ -6,7 +6,7 @@ export default function Footer() {
       <div className="wrap">
         <div className="footer-grid">
           <div>
-            <img className="footer-logo" src="https://www.csocs.com.au/logo_white.svg" alt="CINI'S logo" />
+            <img className="footer-logo" src="/logo_white.svg" alt="CINI'S logo" />
             <p style={{ color: "#B9CFE6", fontSize: "0.92rem", maxWidth: "34ch" }}>
               CINI'S has provided commercial and pharmaceutical cleaning
               services since 1995, trusted by facilities across Melbourne

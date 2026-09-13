@@ -46,7 +46,7 @@ export default function Header() {
     <header className="site-header">
       <div className="wrap header-inner">
         <Link href="/" className="logo">
-          <img src="https://www.csocs.com.au/logo.png" alt="CINI'S logo" />
+          <img src="/logo.png" alt="CINI'S logo" />
         </Link>
 
         <nav className="main-nav">
