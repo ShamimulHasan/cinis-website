@@ -8,6 +8,7 @@ const initialState = {
   phone: "",
   service: "Cleanroom / Sterile Cleaning",
   message: "",
+  website: "", // honeypot — real visitors never see or fill this field
 };
 
 export default function ContactForm() {
@@ -56,6 +57,18 @@ export default function ContactForm() {
       {status.state === "error" && (
         <div className="form-status error">{status.message}</div>
       )}
+
+      <div className="hp-field" aria-hidden="true">
+        <label htmlFor="website">Website</label>
+        <input
+          id="website"
+          name="website"
+          tabIndex={-1}
+          autoComplete="off"
+          value={form.website}
+          onChange={(e) => update("website", e.target.value)}
+        />
+      </div>
 
       <div className="form-grid">
         <div className="field">

@@ -340,6 +340,10 @@ button{ font-family: inherit; cursor:pointer; }
 .form-status.success{ background: #E7F6EE; color: var(--success); }
 .form-status.error{ background: #FCEAEA; color:#B3261E; }
 
+/* Honeypot — off-screen rather than display:none, since some bots skip
+   fields hidden that obviously. Real visitors never see or reach it. */
+.hp-field{ position: absolute; left: -9999px; top: -9999px; width: 1px; height: 1px; overflow: hidden; }
+
 /* ---------- Footer ---------- */
 .site-footer{ background: var(--navy); color:#C7D6E6; padding: 64px 0 28px; }
 .footer-grid{ display:grid; grid-template-columns: 1.4fr 1fr 1fr 1.2fr; gap:40px; margin-bottom:48px; }

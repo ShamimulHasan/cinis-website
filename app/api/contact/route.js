@@ -16,7 +16,14 @@ export async function POST(request) {
     return NextResponse.json({ error: "Invalid request body." }, { status: 400 });
   }
 
-  const { name, email, phone, service, message } = body || {};
+  const { name, email, phone, service, message, website } = body || {};
+
+  // Honeypot: real visitors never see or fill the "website" field (it's
+  // hidden off-screen). Anything that fills it in is a bot — pretend it
+  // worked so the bot moves on, but don't actually process the submission.
+  if (website) {
+    return NextResponse.json({ ok: true });
+  }
 
   if (!name || !email || !phone || !message) {
     return NextResponse.json(
