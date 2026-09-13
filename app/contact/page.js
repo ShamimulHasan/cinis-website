@@ -1,4 +1,5 @@
 import Link from "next/link";
+import Image from "next/image";
 import ContactForm from "@/components/ContactForm";
 import { IconPin, IconPhone, IconMail, IconClock } from "@/components/Icons";
 
@@ -12,7 +13,14 @@ export default function ContactPage() {
     <>
       <section className="page-hero" style={{ padding: "90px 0 60px" }}>
         <div className="hero-bg">
-          <img src="https://i.ibb.co/jrmSg7Z/hero-section.jpg" alt="" />
+          <Image
+            src="https://i.ibb.co/jrmSg7Z/hero-section.jpg"
+            alt=""
+            fill
+            sizes="100vw"
+            priority
+            style={{ objectFit: "cover" }}
+          />
         </div>
         <div className="wrap">
           <div className="breadcrumb"><Link href="/">Home</Link> / Contact</div>

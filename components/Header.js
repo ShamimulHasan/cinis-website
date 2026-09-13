@@ -2,6 +2,7 @@
 
 import { useEffect, useState } from "react";
 import Link from "next/link";
+import Image from "next/image";
 import { IconMoon, IconSun } from "./Icons";
 
 function ThemeToggle() {
@@ -46,7 +47,7 @@ export default function Header() {
     <header className="site-header">
       <div className="wrap header-inner">
         <Link href="/" className="logo">
-          <img src="/logo.png" alt="CINI'S logo" />
+          <Image src="/logo.png" alt="CINI'S logo" width={128} height={40} priority />
         </Link>
 
         <nav className="main-nav">

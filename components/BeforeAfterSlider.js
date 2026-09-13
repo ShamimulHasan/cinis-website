@@ -1,6 +1,7 @@
 "use client";
 
 import { useState } from "react";
+import Image from "next/image";
 
 // A drag-to-compare slider. Built on a native <input type="range"> so it's
 // keyboard- and screen-reader-friendly for free, styled invisibly on top
@@ -18,12 +19,24 @@ export default function BeforeAfterSlider({
   return (
     <div>
       <div className="ba-slider" style={{ "--ba-pos": `${pos}%` }}>
-        <img className="ba-after" src={afterSrc} alt={afterLabel} />
+        <Image
+          className="ba-after"
+          src={afterSrc}
+          alt={afterLabel}
+          fill
+          sizes="(max-width: 1180px) 100vw, 1180px"
+          style={{ objectFit: "cover" }}
+        />
         <div className="ba-before-wrap">
-          <img
+          <Image
             src={beforeSrc}
             alt={beforeLabel}
-            style={tintBefore ? { filter: "saturate(0.35) sepia(0.25) brightness(0.75) contrast(1.05)" } : undefined}
+            fill
+            sizes="(max-width: 1180px) 100vw, 1180px"
+            style={{
+              objectFit: "cover",
+              ...(tintBefore ? { filter: "saturate(0.35) sepia(0.25) brightness(0.75) contrast(1.05)" } : {}),
+            }}
           />
         </div>
 

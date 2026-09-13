@@ -1,4 +1,5 @@
 import Link from "next/link";
+import Image from "next/image";
 import WhyUs from "@/components/WhyUs";
 import { IconCheck } from "@/components/Icons";
 
@@ -12,7 +13,14 @@ export default function AboutPage() {
     <>
       <section className="page-hero">
         <div className="hero-bg">
-          <img src="https://i.ibb.co/jrmSg7Z/hero-section.jpg" alt="" />
+          <Image
+            src="https://i.ibb.co/jrmSg7Z/hero-section.jpg"
+            alt=""
+            fill
+            sizes="100vw"
+            priority
+            style={{ objectFit: "cover" }}
+          />
         </div>
         <div className="wrap">
           <div className="breadcrumb"><Link href="/">Home</Link> / About Us</div>
@@ -24,7 +32,13 @@ export default function AboutPage() {
       <section className="section">
         <div className="wrap about-grid">
           <div className="about-photo-wrap">
-            <img src="https://www.csocs.com.au/about_us.png" alt="The CINI'S team at work" />
+            <Image
+              src="https://www.csocs.com.au/about_us.png"
+              alt="The CINI'S team at work"
+              fill
+              sizes="(max-width: 860px) 100vw, 560px"
+              style={{ objectFit: "cover" }}
+            />
             <div className="about-badge">
               <strong>25+</strong>
               <span>Years of experience</span>

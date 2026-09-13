@@ -1,4 +1,5 @@
 import Link from "next/link";
+import Image from "next/image";
 import { IconCheck } from "./Icons";
 
 const allServices = [
@@ -16,7 +17,7 @@ export default function ServiceDetail({ title, eyebrow, intro, image, points, cu
     <>
       <section className="page-hero">
         <div className="hero-bg">
-          <img src={image} alt="" />
+          <Image src={image} alt="" fill sizes="100vw" priority style={{ objectFit: "cover" }} />
         </div>
         <div className="wrap">
           <div className="breadcrumb">
@@ -30,7 +31,9 @@ export default function ServiceDetail({ title, eyebrow, intro, image, points, cu
       <section className="section">
         <div className="wrap service-detail">
           <div>
-            <img src={image} alt={title} />
+            <div className="service-detail-photo">
+              <Image src={image} alt={title} fill sizes="(max-width: 900px) 100vw, 680px" style={{ objectFit: "cover" }} />
+            </div>
             <p>{intro}</p>
             <ul className="checklist">
               {points.map((point) => (
