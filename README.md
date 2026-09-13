@@ -39,7 +39,9 @@ server API route, and a refreshed version of the original navy/blue theme.
   - `/services/post-maintenance`
   - `/services/office`
 - **A real backend for the contact form** — `app/api/contact/route.js`
-  is a server route that validates submissions and sends an email via
+  is a server route that validates submissions, appends each one as a row
+  in a Google Sheet (`lib/googleSheets.js`) so enquiries build up into a
+  running datasheet over time, and emails an immediate notification via
   SMTP (using `nodemailer`). It's not just client-side simulation.
 - Responsive, accessible layout with a sticky header, dropdown services
   menu, testimonial carousel, and a reusable service-page template.
@@ -58,8 +60,8 @@ npm run dev
 Then open http://localhost:3000.
 
 Without any further setup, the contact form will still work end-to-end —
-submissions are logged to the server console instead of emailed, so you
-can test it immediately.
+submissions are logged to the server console instead of emailed/saved, so
+you can test it immediately.
 
 ## Turning on real email delivery
 
@@ -79,14 +81,55 @@ can test it immediately.
    `/contact` will now be emailed to `CONTACT_TO_EMAIL`, with the
    customer's address set as the reply-to.
 
+## Turning on the enquiry datasheet (Google Sheets)
+
+Every enquiry can also be appended as a row in a Google Sheet, so you get
+a running record of everyone who's contacted you — not just a stream of
+emails. This works independently of email delivery (either one can be on
+without the other).
+
+1. **Create the sheet.** Make a new Google Sheet (e.g. "CINI'S Enquiries").
+   In the tab you want rows added to (default tab name: `Enquiries`), add
+   a header row: `Timestamp | Name | Email | Phone | Service | Message`.
+   Copy the sheet's ID out of its URL:
+   `https://docs.google.com/spreadsheets/d/`**`THIS_PART`**`/edit`.
+2. **Create a service account** (a robot account the website uses to write
+   to the sheet — it never touches your personal Google login):
+   - Go to the [Google Cloud Console](https://console.cloud.google.com/),
+     create a project (or use an existing one).
+   - Enable the **Google Sheets API** for that project (APIs & Services →
+     Enable APIs and Services → search "Google Sheets API" → Enable).
+   - Go to APIs & Services → Credentials → Create Credentials → Service
+     Account. Give it any name, no extra roles needed.
+   - Open the service account → Keys → Add Key → Create new key → JSON.
+     This downloads a `.json` file — keep it private, it's a credential.
+3. **Share the sheet** with the service account: open the downloaded JSON,
+   copy the `client_email` value (looks like
+   `something@your-project.iam.gserviceaccount.com`), then in Google
+   Sheets click Share and add that email as an **Editor**.
+4. **Set the environment variables** (in `.env.local` for local dev, or in
+   your host's project settings for production) from that same JSON file:
+
+   ```
+   GOOGLE_SERVICE_ACCOUNT_EMAIL=<the client_email value>
+   GOOGLE_PRIVATE_KEY="<the private_key value, keep the \n's and quotes>"
+   GOOGLE_SHEET_ID=<the ID you copied from the sheet's URL>
+   GOOGLE_SHEET_NAME=Enquiries
+   ```
+
+   The private key in the JSON file already contains literal `\n`
+   sequences — paste it exactly as-is, in quotes.
+5. Restart the dev server (or redeploy). Enquiries submitted through
+   `/contact` will now also append a row to the sheet.
+
 ## Deploying
 
 This is a standard Next.js app, so it deploys to any Next.js-compatible
 host:
 
 - **Vercel** (simplest): push this folder to a GitHub repo, import it at
-  vercel.com, add the same environment variables in the project
-  settings, and deploy.
+  vercel.com, add the same environment variables (SMTP_* and/or GOOGLE_*)
+  in the project settings, and deploy.
 - **Any Node host** (e.g. a VPS, Railway, Render): run `npm run build`
   then `npm run start`, with the environment variables set on the host.
 

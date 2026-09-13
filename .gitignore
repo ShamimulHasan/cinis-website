@@ -21,6 +21,10 @@ yarn-error.log*
 .env
 .env*.local
 
+# Google Cloud service account key downloads (named cinis-website-<hash>.json)
+# — never commit one of these
+cinis-website-*.json
+
 # vercel
 .vercel
 
