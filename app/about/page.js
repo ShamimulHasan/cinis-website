@@ -3,7 +3,7 @@ import WhyUs from "@/components/WhyUs";
 import { IconCheck } from "@/components/Icons";
 
 export const metadata = {
-  title: "About Us | CINI'S Sterile & Office Cleaning Services",
+  title: "About Us",
   description: "CINI'S has provided commercial and pharmaceutical cleaning since 1995.",
 };
 

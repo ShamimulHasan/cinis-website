@@ -448,6 +448,15 @@ button{ font-family: inherit; cursor:pointer; }
   .finder-result{ animation: none; }
 }
 
+/* ---------- Legal pages (privacy policy) ---------- */
+.legal-content{ max-width: 720px; margin: 0 auto; }
+.legal-content h2{ font-size: 1.3rem; margin-top: 40px; }
+.legal-content h2:first-child{ margin-top: 0; }
+.legal-content p, .legal-content li{ color: var(--text-muted); }
+.legal-content ul{ margin: 0 0 16px; padding-left: 20px; list-style: disc; }
+.legal-content li{ margin-bottom: 8px; }
+.legal-content .updated{ font-size: 0.88rem; color: var(--text-muted); margin-bottom: 32px; display: block; }
+
 /* ---------- Scroll reveal (section headings only) ---------- */
 .reveal-hidden{ opacity: 0; transform: translateY(20px); }
 .reveal-visible{

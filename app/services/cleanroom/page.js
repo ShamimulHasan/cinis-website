@@ -1,7 +1,7 @@
 import ServiceDetail from "@/components/ServiceDetail";
 
 export const metadata = {
-  title: "Cleanroom / Sterile Cleaning | CINI'S",
+  title: "Cleanroom / Sterile Cleaning",
   description: "Specialising in cleanroom and sterile environment cleaning, meeting even the strictest standards.",
 };
 

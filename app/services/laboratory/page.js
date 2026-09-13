@@ -1,7 +1,7 @@
 import ServiceDetail from "@/components/ServiceDetail";
 
 export const metadata = {
-  title: "Laboratory Cleaning | CINI'S",
+  title: "Laboratory Cleaning",
   description: "Get the perfect clean for your lab with our specialised cleaning service.",
 };
 

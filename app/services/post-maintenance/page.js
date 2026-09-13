@@ -1,7 +1,7 @@
 import ServiceDetail from "@/components/ServiceDetail";
 
 export const metadata = {
-  title: "Post Maintenance Cleaning | CINI'S",
+  title: "Post Maintenance Cleaning",
   description: "Your space deserves a post-maintenance glow — leave the cleanup to us.",
 };
 

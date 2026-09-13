@@ -3,7 +3,7 @@ import ContactForm from "@/components/ContactForm";
 import { IconPin, IconPhone, IconMail, IconClock } from "@/components/Icons";
 
 export const metadata = {
-  title: "Contact | CINI'S Sterile & Office Cleaning Services",
+  title: "Contact",
   description: "Get in touch with CINI'S for a cleaning quote across cleanroom, laboratory and office spaces.",
 };
 

@@ -45,6 +45,7 @@ export default function Footer() {
 
         <div className="footer-bottom">
           <span>© {new Date().getFullYear()} CINI'S Sterile &amp; Office Cleaning Services</span>
+          <Link href="/privacy">Privacy Policy</Link>
           <span>Clyde North, Victoria, Australia</span>
         </div>
       </div>

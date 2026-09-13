@@ -1,7 +1,7 @@
 import ServiceDetail from "@/components/ServiceDetail";
 
 export const metadata = {
-  title: "Office Cleaning | CINI'S",
+  title: "Office Cleaning",
   description: "Enjoy a fresh office every day with our reliable cleaning service.",
 };
 
