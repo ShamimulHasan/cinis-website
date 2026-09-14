@@ -4,6 +4,7 @@ import "./globals.css";
 import Header from "@/components/Header";
 import Footer from "@/components/Footer";
 import { siteUrl } from "@/lib/site";
+import { localBusinessSchema } from "@/lib/structuredData";
 
 const heading = Poppins({
   subsets: ["latin"],
@@ -51,6 +52,12 @@ export default function RootLayout({ children }) {
     <html lang="en" className={`${heading.variable} ${body.variable}`}>
       <head>
         <script dangerouslySetInnerHTML={{ __html: themeInitScript }} />
+        <script
+          type="application/ld+json"
+          dangerouslySetInnerHTML={{
+            __html: JSON.stringify(localBusinessSchema).replace(/</g, "\\u003c"),
+          }}
+        />
       </head>
       <body>
         <Header />
