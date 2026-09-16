@@ -12,28 +12,87 @@ function categorySuggestions() {
   return faqCategories.map((c) => ({ label: c.label, type: "category", id: c.id }));
 }
 
-// Very small keyword-overlap scorer — good enough for a fixed, curated FAQ
-// set. No AI, no API calls, nothing that can be "wrong" in an LLM sense.
+// Small word-overlap scorer — good enough for a fixed, curated FAQ set. No
+// AI, no API calls, nothing that can be "wrong" in an LLM sense.
+//
+// Two layers: (1) a strong bonus if a whole keyword phrase or the question
+// appears verbatim, same as before, and (2) individual-word overlap after
+// stripping filler words and light stemming, so different phrasing, plurals,
+// and word order ("do you clean labs" vs the keyword "clean a lab") still
+// find the right answer instead of falling through to the fallback message.
+const STOPWORDS = new Set([
+  "a", "an", "the", "is", "are", "was", "were", "do", "does", "did", "you", "your", "yours",
+  "we", "us", "our", "i", "me", "my", "mine", "can", "could", "would", "should", "will", "shall",
+  "how", "what", "when", "where", "who", "whom", "which", "to", "of", "for", "in", "on", "at",
+  "with", "about", "this", "that", "it", "its", "be", "been", "being", "have", "has", "had",
+  "need", "needs", "want", "wants", "please", "hi", "hello", "hey", "and", "or", "but", "if",
+  "so", "just", "there", "here", "get", "got", "also",
+]);
+
+// These words appear in almost every FAQ ("cleaning"), so on their own they
+// shouldn't be enough to confidently pick one answer over another.
+const LOW_WEIGHT_WORDS = new Set(["clean", "cleaning", "cleaner", "cleaned", "service", "services", "cini", "cinis"]);
+
+function stem(word) {
+  if (word.length > 5 && word.endsWith("ies")) return word.slice(0, -3) + "y";
+  if (word.length > 5 && word.endsWith("ing")) return word.slice(0, -3);
+  if (word.length > 4 && word.endsWith("ed")) return word.slice(0, -2);
+  if (word.length > 4 && word.endsWith("es")) return word.slice(0, -2);
+  if (word.length > 3 && word.endsWith("s")) return word.slice(0, -1);
+  return word;
+}
+
+function tokenize(text) {
+  return text
+    .toLowerCase()
+    .split(/[^a-z0-9]+/)
+    .filter((w) => w.length > 1 && !STOPWORDS.has(w))
+    .map(stem);
+}
+
+// Precomputed once (not per keystroke): each FAQ's keywords + question,
+// tokenized and stemmed, as a set for fast overlap checks.
+const faqTokenIndex = allFaqs.map((faq) => {
+  const words = new Set();
+  for (const kw of faq.keywords) tokenize(kw).forEach((w) => words.add(w));
+  tokenize(faq.question).forEach((w) => words.add(w));
+  return { faq, words };
+});
+
 function matchFaq(rawInput) {
   const input = rawInput.toLowerCase().trim();
   if (!input) return null;
 
+  const inputTokens = tokenize(input);
+  if (inputTokens.length === 0) return null;
+
   let best = null;
   let bestScore = 0;
 
-  for (const faq of allFaqs) {
+  for (const { faq, words } of faqTokenIndex) {
     let score = 0;
+
+    // Strong signal: a full keyword phrase or the question text appears verbatim.
     for (const keyword of faq.keywords) {
-      if (input.includes(keyword)) score += keyword.split(" ").length;
+      if (input.includes(keyword)) score += keyword.split(" ").length * 2;
     }
-    if (input.includes(faq.question.toLowerCase())) score += 5;
+    if (input.includes(faq.question.toLowerCase())) score += 6;
+
+    // Word-level overlap, so different phrasing/pluralization still matches.
+    for (const token of inputTokens) {
+      if (words.has(token)) score += LOW_WEIGHT_WORDS.has(token) ? 0.4 : 1;
+    }
+
     if (score > bestScore) {
       bestScore = score;
       best = faq;
     }
   }
 
-  return bestScore > 0 ? best : null;
+  // Require a bit more than a single generic word before committing to an
+  // answer, so e.g. "cleaning" alone doesn't confidently match something
+  // arbitrary — but one specific/distinctive word is enough.
+  return bestScore >= 1 ? best : null;
 }
 
 let messageId = 0;
