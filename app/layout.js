@@ -3,6 +3,7 @@ import { Analytics } from "@vercel/analytics/next";
 import "./globals.css";
 import Header from "@/components/Header";
 import Footer from "@/components/Footer";
+import FaqChatWidget from "@/components/FaqChatWidget";
 import { siteUrl } from "@/lib/site";
 import { localBusinessSchema } from "@/lib/structuredData";
 
@@ -68,6 +69,7 @@ export default function RootLayout({ children }) {
         <Header />
         {children}
         <Footer />
+        <FaqChatWidget />
         <Analytics />
       </body>
     </html>
